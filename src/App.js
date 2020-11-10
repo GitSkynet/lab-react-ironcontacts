@@ -1,19 +1,14 @@
 import React from 'react';
-import './App.css';
-import Contact from './components/Contact';
 import contactsList from './contacts.json';
-
 class App extends React.Component {
   state = {
     // contactListTotals : [...contactsList]
     contactsList: contactsList.splice(0, 6),
     // randomList : contactListTotals.splice()
   };
-
   handlerandom = () => {
     let random
     let inList = true;
-
     while(inList){
       random = contactsList[Math.floor(Math.random() * contactsList.length)];
       inList = false;
@@ -27,7 +22,6 @@ class App extends React.Component {
       contactsList: [...this.state.contactsList, random]
     })
   };
-
   sortByName = () => {
     var byName = this.state.contactsList;
     byName.sort(function(a,b) {
@@ -39,7 +33,6 @@ class App extends React.Component {
       contactsList: [...byName]
     })
   }
-
   sortByPopularity = () => {
     var byPop = this.state.contactsList;
     byPop.sort(function(a,b) {
@@ -51,20 +44,13 @@ class App extends React.Component {
       contactsList: [...byPop]
     })
   }
-
-  deleteButton = (actorsIndex) => {
-    const actorsCopy = [...this.state.contactsList];
-    // eliminamos la posición que llega como argumento
-    actorsCopy.splice(actorsIndex, 1);
-    // usamos el método setState para setear en el estado el nuevo array
-
-    //devuelve todas las movies cuyo id no coincide con el que llega por parámetro al método
-    const filtered = this.state.contactsList.filter(contacts => contacts.id !== actorsIndex)
+  deleteButton = (actorIndex) => {
+    const actorList = this.state.contactsList.filter(oneContact => oneContact.id !== actorIndex)
+    console.log(actorList);
     this.setState({
-      contactsList: filtered,
+      contactsList: actorList,
     });
   }
-
   render() {
     let actores = this.state.contactsList.map((oneContact, index) => {
       return (
@@ -79,11 +65,10 @@ class App extends React.Component {
             />
           </td>
           <td>{oneContact.popularity}</td>
-          <td><button onClick={this.deleteButton} >Delete!</button></td>
+          <td><button onClick={() => this.deleteButton(oneContact.id)} > Delete!!</button></td>
         </tr>
       );
     });
-
     return (
       <div>
       <button onClick={this.handlerandom} >Add random Contact</button>
@@ -102,5 +87,4 @@ class App extends React.Component {
     );
   }
 }
-
 export default App;
